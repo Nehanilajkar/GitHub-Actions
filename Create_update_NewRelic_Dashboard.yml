@@ -1,0 +1,42 @@
+name: Dashboard create or update
+ 
+on:
+  workflow_dispatch:
+    inputs:
+      DASHBORAD_NAME:
+        required: true
+        type: choice
+        options:
+          - Infrastructure
+          - Performance
+      OPERATION:
+        required: true
+        type: choice
+        options:
+         - Create
+         - Update
+      
+env:
+  DASHBORAD_NAME: ${{ github.event.inputs.DASHBORAD_NAME }}
+  OPERATION: ${{ github.event.inputs.OPERATION }}
+  NR_API_Key: ${{ secrets.NR_API_KEY }}
+  NR_ACCOUNT_ID: ${{ secrets.NR_ACCOUNT_ID }}
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5.1.0
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: pip install -r requirements.txt  
+    
+    - name: Run Python script
+      run: src/utils/_init_.py
