@@ -1,0 +1,64 @@
+name: Jira Tickets Report
+# run-name: "Trigger Jira Utility: ${{ github.event.inputs.DAYS || github.event.client_payload.DAYS }} ${{ github.event.inputs.KEY || github.event.client_payload.KEY }}"
+ 
+on:
+  workflow_dispatch:
+    inputs:
+      DAYS:
+        required: true
+        type: string
+      KEY:
+        required: true
+        type: choice
+        options:
+         - ME
+         - MISD
+         - MMS
+      CHANNEL:
+        type: string
+        description: "This is optional value"
+  # repository_dispatch:
+    # types: [get-jira-reports]
+env:
+  DAYS: ${{ github.event.inputs.DAYS || github.event.client_payload.DAYS }}
+  KEY: ${{ github.event.inputs.KEY || github.event.client_payload.KEY }}
+  SLACK_CHANNEL: ${{ github.event.inputs.CHANNEL || github.event.client_payload.CHANNEL }}
+  JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+  JIRA_SERVER: ${{ secrets.JIRA_SERVER }}
+  JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+  
+jobs:
+  run-python-script:
+    runs-on: ${{ vars.RUNNER_TYPE }}
+ 
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+ 
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10.12
+ 
+    - name: "Install required packages"
+      run: |
+        pip install --upgrade pip
+        pip install -r Jira_Utility/requirements.txt
+    
+    - name: Create output directory
+      run: |
+       mkdir output
+      
+    - name: Run Python Script
+      run: python Jira_Utility/jira_script.py
+      
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v3
+      with:
+       name: jira_results_${{ env.KEY }}for${{ env.DAYS }}_days.xlsx
+       path: output/jira_results_${{ env.KEY }}for${{ env.DAYS }}_days.xlsx
+ 
+    - name: Send report to Slack
+      run: |
+        # Use curl to upload the Excel file to Slack
+        curl -F file=@output/jira_results_${{ env.KEY }}for${{ env.DAYS }}_days.xlsx -F channels=${{ env.SLACK_CHANNEL }} -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" https://slack.com/api/files.upload 
