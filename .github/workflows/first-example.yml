@@ -19,6 +19,6 @@ jobs:
     - name: Graphical listing of files
       run: tree /home/runner/work/GitHub-Actions/GitHub-Actions
     - name: Start httpd
-      run: sudo systemct start apache2
+      run: sudo systemctl start apache2
     - name: Httpd status check
       run: systemctl status apache2
