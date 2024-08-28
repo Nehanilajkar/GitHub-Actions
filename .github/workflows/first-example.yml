@@ -17,4 +17,4 @@ jobs:
     - name: Install tree
       run: sudo apt install tree -y 
     - name: Graphical listing of files
-      run: tree 
+      run: tree /home/runner/work/GitHub-Actions/GitHub-Actions
