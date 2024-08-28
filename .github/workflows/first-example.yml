@@ -14,5 +14,7 @@ jobs:
         ls -la
     - name: Read file
       run: cat .github/workflows/Jira_report.yml
+    - name: Install tree
+      run: sudo apt install tree -y 
     - name: Graphical listing of files
       run: tree 
