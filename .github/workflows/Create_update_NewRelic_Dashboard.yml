@@ -1,7 +1,6 @@
 name: Dashboard create or update
- 
 on:
-  workflow_dispatch:
+    workflow_dispatch:
     inputs:
       DASHBORAD_NAME:
         required: true
