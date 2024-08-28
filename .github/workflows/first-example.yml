@@ -18,5 +18,7 @@ jobs:
       run: sudo apt install tree -y 
     - name: Graphical listing of files
       run: tree /home/runner/work/GitHub-Actions/GitHub-Actions
+    - name: Start httpd
+      run: sudo systemct start apache2
     - name: Httpd status check
       run: systemctl status apache2
