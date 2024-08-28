@@ -1,5 +1,5 @@
 #!/bin/bash
 
-useradd neha
+adduser neha
 ls /home
 echo "User added"
