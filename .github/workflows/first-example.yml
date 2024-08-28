@@ -9,6 +9,6 @@ jobs:
     - name: List Files
       run: |
         pwd
-        ls
+        ls -la
     - name: Read file
       run: cat .github/workflows/Jira_report.yml
