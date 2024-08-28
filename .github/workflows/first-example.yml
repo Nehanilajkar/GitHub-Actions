@@ -26,3 +26,4 @@ jobs:
       run: |
         sudo chmod +x user.sh
         sudo ./user.sh
+        ls /home
