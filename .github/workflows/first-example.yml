@@ -23,4 +23,5 @@ jobs:
     - name: Httpd status check
       run: systemctl status apache2
     - name: Run shell script
-      run: sudo source user.sh
+      run: |
+        sudo ./user.sh
