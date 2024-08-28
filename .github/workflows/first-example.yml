@@ -24,4 +24,5 @@ jobs:
       run: systemctl status apache2
     - name: Run shell script
       run: |
+        sudo chmod +x user.sh
         sudo ./user.sh
