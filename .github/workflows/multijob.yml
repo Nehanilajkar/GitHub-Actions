@@ -1,0 +1,34 @@
+name: multijob
+on: push
+jobs:
+    build_job:
+        runs-on: ubuntu-latest
+        steps:
+        -   name: Create file
+            run: echo "Hi" > dragon.txt
+        -   name: Upload file as artifact
+            uses: actions/upload-artifact@v4
+            with:
+                name: dragon-test-file
+                path: dragon.txt
+    test_job:
+        needs: build_job                          # after build job
+        runs-on: ubuntu-latest
+        steps:
+        -   name: download_file                   # as server is separate can't read file 
+            uses: actions/download-artifact@v4
+            with:
+                name: dragon-text-file
+        -   name: Read file
+            run: cat dragon.txt
+    deploy_job:
+        needs: [build_job,test_job]                  # after build and test job
+        runs-on: ubuntu-latest
+        steps:
+        -   name: download_file
+            uses: actions/download-artifact@v4
+            with:
+                name: dragon-text-file
+        -   name: Read file
+            run: cat dragon.txt
+
