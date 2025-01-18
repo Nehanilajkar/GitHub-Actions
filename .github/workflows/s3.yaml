@@ -28,6 +28,6 @@ jobs:
 
       - name: Upload to S3
         run: |
-          aws s3 cp file1 s3://${{ github.event.inputs.s3_bucket }}/${{ github.event.inputs.s3_key }}/Node.gitignore
-          aws s3 cp file2 s3://${{ github.event.inputs.s3_bucket }}/${{ github.event.inputs.s3_key }}/Python.gitignore
-          aws s3 cp file3 s3://${{ github.event.inputs.s3_bucket }}/${{ github.event.inputs.s3_key }}/Java.gitignore
+          aws s3 cp file1 s3://test-nexus-neha/nexus-jars/Node.gitignore
+          aws s3 cp file2 s3://test-nexus-neha/nexus-jars/Python.gitignore
+          aws s3 cp file3 s3://test-nexus-neha/nexus-jars/Java.gitignore
