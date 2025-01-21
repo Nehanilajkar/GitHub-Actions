@@ -39,7 +39,7 @@ jobs:
         run: |
           declare -A bucket_map
           bucket_map["SBOX-CIM"]="12345-mrt-fabric"
-          bucket_map["DEV_CIM"]="67890-mrt-fabric"
+          bucket_map["DEV-CIM"]="67890-mrt-fabric"
           
           # Get the bucket name based on user selection
           BUCKET_NAME=${bucket_map["${{ github.event.inputs.aws_account }}"]}
