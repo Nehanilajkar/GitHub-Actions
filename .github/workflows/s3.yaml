@@ -2,6 +2,14 @@ name: Upload File to S3
 
 on:
   workflow_dispatch:
+    inputs:
+      aws_account:
+        description: 'Choose AWS account'
+        required: true
+        type: choice
+        options:
+          - 'SBOX-CIM'
+          - 'DEV-CIM'
 
 jobs:
   upload-to-s3:
@@ -20,12 +28,25 @@ jobs:
           curl -o file1 "https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore"
           curl -o file2 "https://raw.githubusercontent.com/github/gitignore/main/Python.gitignore"
           curl -o file3 "https://raw.githubusercontent.com/github/gitignore/main/Java.gitignore"
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::034362044754:role/test-s3-neha
           aws-region: ap-southeast-1
 
+      - name: Set AWS account and bucket name
+        run: |
+          declare -A bucket_map
+          bucket_map["SBOX-CIM"]="12345-mrt-fabric"
+          bucket_map["DEV_CIM"]="67890-mrt-fabric"
+          
+          # Get the bucket name based on user selection
+          BUCKET_NAME=${bucket_map["${{ github.event.inputs.aws_account }}"]}
+          echo "Using bucket $BUCKET_NAME"
+
+          # Set the bucket name as an environment variable
+          echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
       - name: Upload to S3
         run: |
           aws s3 cp file1 s3://test-nexus-neha/nexus-jars/Node.gitignore
